@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Statusline polls run frequently (multiple times per Claude refresh).
+# Without this, `git status` below would try to refresh the index stat
+# cache and race the user's own git operations for .git/index.lock.
+export GIT_OPTIONAL_LOCKS=0
+
 input=$(cat)
 current_dir=$(echo "$input" | jq -r '.workspace.current_dir // .cwd')
 ARROW_RIGHT=$(printf '\xee\x82\xb0')
